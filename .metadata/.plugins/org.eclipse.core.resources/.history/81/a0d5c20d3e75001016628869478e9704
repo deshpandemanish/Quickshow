@@ -1,0 +1,23 @@
+package com.driver.bookMyShow.Services;
+
+import java.util.List;
+
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Booking {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String userName;
+    private String paymentId;
+    private String orderId;
+
+    @ElementCollection
+    private List<String> seats;
+}
