@@ -1,0 +1,70 @@
+package com.driver.bookMyShow.Controllers;
+
+import com.driver.bookMyShow.Dtos.RequestDtos.LoginDto;
+import com.driver.bookMyShow.Dtos.RequestDtos.UserEntryDto;
+import com.driver.bookMyShow.Dtos.ResponseDtos.TicketResponseDto;
+import com.driver.bookMyShow.Models.Ticket;
+import com.driver.bookMyShow.Models.User;
+import com.driver.bookMyShow.Repositories.UserRepository;
+import com.driver.bookMyShow.Services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@CrossOrigin(origins = "http://localhost:5173")
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/addNew")
+    public ResponseEntity<String> addNewUser(@RequestBody UserEntryDto userEntryDto) {
+        try {
+            String result = userService.addUser(userEntryDto);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/allTickets/{userId}")
+    public ResponseEntity<List<TicketResponseDto>> allTickets(@PathVariable Integer userId) {
+        try {
+            List<TicketResponseDto> result = userService.allTickets(userId);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    
+    
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) {
+        try {
+            User user = userRepository.findByEmailId(loginDto.getEmailId());
+
+            if (user != null && user.getMobileNo().equals(loginDto.getMobileNo())) {
+                Map<String, String> response = new HashMap<>();
+                response.put("name", user.getName()); // assuming User has getName()
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Login failed");
+        }
+    }
+
+
+}

@@ -1,0 +1,55 @@
+package com.driver.bookMyShow.Dtos.RequestDtos;
+
+
+import java.util.List;
+
+public class BookingRequest {
+
+    private List<Long> seatIds;
+    private Long showId;
+    private String userEmail;
+
+    
+    public BookingRequest() {}
+
+    public BookingRequest(List<Long> seatIds, Long showId, String userEmail) {
+        this.seatIds = seatIds;
+        this.showId = showId;
+        this.userEmail = userEmail;
+    }
+
+    // Getters and Setters
+    public List<Long> getSeatIds() {
+        return seatIds;
+    }
+
+    public void setSeatIds(List<Long> seatIds) {
+        this.seatIds = seatIds;
+    }
+
+    public Long getShowId() {
+        return showId;
+    }
+
+    public void setShowId(Long showId) {
+        this.showId = showId;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    // Optional: toString() for logging
+    @Override
+    public String toString() {
+        return "BookingRequest{" +
+                "seatIds=" + seatIds +
+                ", showId=" + showId +
+                ", userEmail='" + userEmail + '\'' +
+                '}';
+    }
+}
